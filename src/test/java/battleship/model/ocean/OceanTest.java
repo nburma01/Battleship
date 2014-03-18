@@ -54,6 +54,11 @@ public class OceanTest {
         assertTrue(aircraftCarrier.okToPlaceShipAt(0, 5, true, ocean));
         assertTrue(aircraftCarrier.okToPlaceShipAt(0, 4, false, ocean));
         assertTrue(aircraftCarrier.okToPlaceShipAt(5, 9, false, ocean));
+        
+        // This should fail
+        //assertTrue(aircraftCarrier.okToPlaceShipAt(5, 9, true, ocean));
+        
+        
     }
 
 }
