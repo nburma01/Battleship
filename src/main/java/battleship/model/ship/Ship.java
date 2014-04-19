@@ -1,6 +1,10 @@
 package battleship.model.ship;
 
 import battleship.model.ocean.Ocean;
+import battleship.specification.Specification;
+import battleship.specification.impl.AdjacentShipSpecification;
+import battleship.specification.impl.RowColumnSpecification;
+import battleship.specification.impl.ShipLengthSpecification;
 
 public abstract class Ship {
 
@@ -33,49 +37,10 @@ public abstract class Ship {
      *         adjacent to another one either horizontally, vertically or diagonally.
      */
     public boolean okToPlaceShipAt(int row, int column, boolean horizontal, Ocean ocean) {
-        // check if the bowRow and bowColumns are within the grid
-        if ((row < 0) || (row > Ocean.ROWS) || (column < 0) || (column > Ocean.COLUMNS)) {
-            return false;
-        }
-
-        // check that the lenght of the ship fits in the grid and that the ship is not adjacent with another one
-        if (horizontal) {
-            if ((column + getLength()) > Ocean.COLUMNS) {
-                return false;
-            }
-
-            for (int i = row - 1; i <= (row + 1); i++) {
-                for (int j = column - 1; j <= (column + getLength()); j++) {
-                    if (checkOceanContainShip(i, j, ocean)) {
-                        return false;
-                    }
-                }
-            }
-        } else {
-            if ((row + getLength()) > Ocean.ROWS) {
-                return false;
-            }
-
-            for (int i = row - 1; i <= (row + getLength()); i++) {
-                for (int j = column - 1; j <= (column + 1); j++) {
-                    if (checkOceanContainShip(i, j, ocean)) {
-                        return false;
-                    }
-                }
-            }
-        }
-
-        return true;
-    }
-
-    private boolean checkOceanContainShip(int row, int column, Ocean ocean) {
-        if ((row >= 0) && (row < Ocean.ROWS) && (column >= 0) && (column < Ocean.COLUMNS)) {
-            if (ocean.isOccupied(row, column)) {
-                return true;
-            }
-        }
-
-        return false;
+        Specification<Ocean> specification = new RowColumnSpecification(row, column).
+                and(new ShipLengthSpecification(row, column, horizontal, getLength())).
+                and(new AdjacentShipSpecification(row, column, horizontal, getLength()));
+        return specification.isSatisfiedBy(ocean);
     }
 
     /**
