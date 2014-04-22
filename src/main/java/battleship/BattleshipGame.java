@@ -11,11 +11,11 @@ public class BattleshipGame {
      */
     public static void main(String[] args) {
 
-        // Welcome message.
-        System.out.println("Welcome to the Battleship Game!\n");
-
-        // Repeat for each game.
+        // Loop for games.
         do {
+            // Welcome message.
+            System.out.println("\nWelcome to the Battleship Game!\n");
+
             // Set up the ocean.
             Ocean ocean = new Ocean();
 
@@ -85,7 +85,7 @@ public class BattleshipGame {
         Scanner inputPa = new Scanner(System.in);
 
         // Prompt user.
-        System.out.print("Play again (Y/N) default=N ? : ");
+        System.out.print("\nPlay again (Y/N) default=N ? : ");
 
         // Get input.
         String sPa = inputPa.nextLine();
