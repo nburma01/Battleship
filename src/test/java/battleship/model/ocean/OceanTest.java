@@ -57,7 +57,9 @@ public class OceanTest {
         
         // This should fail
         //assertTrue(aircraftCarrier.okToPlaceShipAt(5, 9, true, ocean));
-        
+
+        // Display the ocean.
+        System.out.println(ocean.toString());
         
     }
 

@@ -39,8 +39,8 @@ public class Ocean {
     }
 
     /**
-     * @param row
-     * @param column
+     * @param row       Row to check.
+     * @param column    Column to check.
      * @return true if the given location contains a ship, false if it does not.
      */
     public boolean isOccupied(int row, int column) {
@@ -48,8 +48,8 @@ public class Ocean {
     }
 
     /**
-     * @param row
-     * @param column
+     * @param row       Row to shoot at.
+     * @param column    Column to shoot at.
      * @return true if the given location contains a real ship and is still afloat, false if it does not.
      */
     public boolean shotAt(int row, int column) {
@@ -110,6 +110,11 @@ public class Ocean {
         return ships;
     }
 
+    /**
+     * Check if ocean is empty.
+     *
+     * @return  True if ocean is empty.
+     */
     private boolean isOceanEmpty() {
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
