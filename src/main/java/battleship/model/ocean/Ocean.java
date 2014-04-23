@@ -1,7 +1,16 @@
 package battleship.model.ocean;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import battleship.model.ship.AircraftCarrier;
+import battleship.model.ship.Battleship;
+import battleship.model.ship.Destroyer;
 import battleship.model.ship.EmptySea;
+import battleship.model.ship.PatrolBoat;
 import battleship.model.ship.Ship;
+import battleship.model.ship.Submarine;
 
 public class Ocean {
     public static final int ROWS = 10;
@@ -34,8 +43,38 @@ public class Ocean {
         if (!isOceanEmpty()) {
             throw new IllegalStateException("Cannot place ships on a non empty ocean");
         }
-
-        //TODO place ships
+        
+        List<Ship> fleet = new ArrayList<Ship>();
+        fleet.add(new AircraftCarrier());
+        fleet.add(new Battleship());
+        fleet.add(new Battleship());
+        fleet.add(new Submarine());
+        fleet.add(new Submarine());
+        fleet.add(new Destroyer());
+        fleet.add(new Destroyer());
+        fleet.add(new PatrolBoat());
+        
+        Random random = new Random();
+        int row;
+        int column;
+        boolean isPlaced;
+        
+        for (Ship s : fleet) {
+        	isPlaced = false;
+        	
+        	while (isPlaced == false) {
+        		row = random.nextInt(ROWS);
+            	column = random.nextInt(COLUMNS);
+            	
+        		if (s.okToPlaceShipAt(row, column, true, this)) {
+        			s.placeShipAt(row, column, true, this);
+        			isPlaced = true;
+        		} else if (s.okToPlaceShipAt(row, column, false, this)) {
+        			s.placeShipAt(row, column, false, this);
+        			isPlaced = true;
+        		}
+        	}
+        }
     }
 
     /**
@@ -138,8 +177,31 @@ public class Ocean {
      */
     @Override
     public String toString() {
-        //TODO
-        return "";
+        StringBuffer buffer = new StringBuffer();
+    	buffer.append("  ");
+    	for (int j = 0; j < COLUMNS; j++) {
+    		buffer.append(j + " ");
+    	}
+    	buffer.append("\n");
+    	
+    	for (int i = 0; i < ROWS; i++) {
+    		buffer.append(i + " ");
+    		for (int j = 0; j < COLUMNS; j++) {
+    			if (shotAt(i, j) && isOccupied(i, j)) {
+    				buffer.append("S");
+    			} else if (shotAt(i, j) && !isOccupied(i, j)) {
+    				buffer.append("-");
+    			} else if (ships[i][j].isSunk()) {
+    				buffer.append("x");
+    			} else {
+    				buffer.append(".");
+    			}
+    			buffer.append(" ");
+    		}
+    		buffer.append("\n");
+    	}
+    	
+        return buffer.toString();
     }
 
 }
