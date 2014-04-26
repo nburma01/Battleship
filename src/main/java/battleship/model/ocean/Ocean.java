@@ -43,8 +43,8 @@ public class Ocean {
         if (!isOceanEmpty()) {
             throw new IllegalStateException("Cannot place ships on a non empty ocean");
         }
-        
-        List<Ship> fleet = new ArrayList<Ship>();
+
+        List<Ship> fleet = new ArrayList<>();
         fleet.add(new AircraftCarrier());
         fleet.add(new Battleship());
         fleet.add(new Battleship());
@@ -53,54 +53,60 @@ public class Ocean {
         fleet.add(new Destroyer());
         fleet.add(new Destroyer());
         fleet.add(new PatrolBoat());
-        
+
         Random random = new Random();
         int row;
         int column;
         boolean isPlaced;
-        
+
         for (Ship s : fleet) {
-        	isPlaced = false;
-        	
-        	while (isPlaced == false) {
-        		row = random.nextInt(ROWS);
-            	column = random.nextInt(COLUMNS);
-            	
-        		if (s.okToPlaceShipAt(row, column, true, this)) {
-        			s.placeShipAt(row, column, true, this);
-        			isPlaced = true;
-        		} else if (s.okToPlaceShipAt(row, column, false, this)) {
-        			s.placeShipAt(row, column, false, this);
-        			isPlaced = true;
-        		}
-        	}
+            isPlaced = false;
+
+            while (isPlaced == false) {
+                row = random.nextInt(ROWS);
+                column = random.nextInt(COLUMNS);
+
+                if (s.okToPlaceShipAt(row, column, true, this)) {
+                    s.placeShipAt(row, column, true, this);
+                    isPlaced = true;
+                } else if (s.okToPlaceShipAt(row, column, false, this)) {
+                    s.placeShipAt(row, column, false, this);
+                    isPlaced = true;
+                }
+            }
         }
     }
 
     /**
-     * @param row       Row to check.
-     * @param column    Column to check.
+     * @param row
+     *            Row to check.
+     * @param column
+     *            Column to check.
      * @return true if the given location contains a ship, false if it does not.
      */
     public boolean isOccupied(int row, int column) {
+        validateRowAndColumn(row, column);
         return !(ships[row][column] instanceof EmptySea);
     }
 
     /**
-     * @param row       Row to shoot at.
-     * @param column    Column to shoot at.
+     * @param row
+     *            Row to shoot at.
+     * @param column
+     *            Column to shoot at.
      * @return true if the given location contains a real ship and is still afloat, false if it does not.
      */
     public boolean shotAt(int row, int column) {
-        if ((row < 0) || (row >= ROWS) || (column < 0) || (column >= COLUMNS)) {
-            throw new IllegalArgumentException(String.format("row should be less than %s and column less than %s", ROWS, COLUMNS));
-        }
+        validateRowAndColumn(row, column);
 
         shotsFired++;
 
         // this takes care also of EmptySea
         if (ships[row][column].shootAt(row, column)) {
             hitsCount++;
+            if (ships[row][column].isSunk()) {
+                shipsSunk++;
+            }
             return true;
         }
 
@@ -134,7 +140,7 @@ public class Ocean {
     public boolean isGameOver() {
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
-                if (!ships[i][j].isSunk()) {
+                if (!(ships[i][j] instanceof EmptySea) && !ships[i][j].isSunk()) {
                     return false;
                 }
             }
@@ -151,8 +157,8 @@ public class Ocean {
 
     /**
      * Check if ocean is empty.
-     *
-     * @return  True if ocean is empty.
+     * 
+     * @return True if ocean is empty.
      */
     private boolean isOceanEmpty() {
         for (int i = 0; i < ROWS; i++) {
@@ -163,6 +169,12 @@ public class Ocean {
             }
         }
         return true;
+    }
+
+    private void validateRowAndColumn(int row, int column) {
+        if ((row < 0) || (row >= ROWS) || (column < 0) || (column >= COLUMNS)) {
+            throw new IllegalArgumentException(String.format("row should be less than %s and column less than %s", ROWS, COLUMNS));
+        }
     }
 
     /*
@@ -178,29 +190,29 @@ public class Ocean {
     @Override
     public String toString() {
         StringBuffer buffer = new StringBuffer();
-    	buffer.append("  ");
-    	for (int j = 0; j < COLUMNS; j++) {
-    		buffer.append(j + " ");
-    	}
-    	buffer.append("\n");
-    	
-    	for (int i = 0; i < ROWS; i++) {
-    		buffer.append(i + " ");
-    		for (int j = 0; j < COLUMNS; j++) {
-    			if (shotAt(i, j) && isOccupied(i, j)) {
-    				buffer.append("S");
-    			} else if (shotAt(i, j) && !isOccupied(i, j)) {
-    				buffer.append("-");
-    			} else if (ships[i][j].isSunk()) {
-    				buffer.append("x");
-    			} else {
-    				buffer.append(".");
-    			}
-    			buffer.append(" ");
-    		}
-    		buffer.append("\n");
-    	}
-    	
+        buffer.append("  ");
+        for (int j = 0; j < COLUMNS; j++) {
+            buffer.append(j + " ");
+        }
+        buffer.append("\n");
+
+        for (int i = 0; i < ROWS; i++) {
+            buffer.append(i + " ");
+            for (int j = 0; j < COLUMNS; j++) {
+                if (shotAt(i, j) && isOccupied(i, j)) {
+                    buffer.append("S");
+                } else if (shotAt(i, j) && !isOccupied(i, j)) {
+                    buffer.append("-");
+                } else if (ships[i][j].isSunk()) {
+                    buffer.append("x");
+                } else {
+                    buffer.append(".");
+                }
+                buffer.append(" ");
+            }
+            buffer.append("\n");
+        }
+
         return buffer.toString();
     }
 

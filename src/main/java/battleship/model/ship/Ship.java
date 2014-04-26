@@ -13,9 +13,11 @@ public abstract class Ship {
     private boolean horizontal;
     private boolean[] hit;
 
-    //TODO confirm this can be done as part of the requirements
-    public Ship(int length) {
-        hit = new boolean[length];
+    /*
+     * Better to initialize the hit array here instead of in each sub class
+     */
+    public Ship() {
+        hit = new boolean[getLength()];
     }
 
     /**
@@ -29,10 +31,14 @@ public abstract class Ship {
     public abstract String getShipType();
 
     /**
-     * @param row           Row to place ship.
-     * @param column        Column to place ship.
-     * @param horizontal    Ship is horizontal.
-     * @param ocean         The ocean where the ship is placed.
+     * @param row
+     *            Row to place ship.
+     * @param column
+     *            Column to place ship.
+     * @param horizontal
+     *            Ship is horizontal.
+     * @param ocean
+     *            The ocean where the ship is placed.
      * @return true if is ok to put a ship of this length with its bow at this location with the given orientation, false otherwise. A ship should not be
      *         adjacent to another one either horizontally, vertically or diagonally.
      */
@@ -46,10 +52,14 @@ public abstract class Ship {
     /**
      * Places the ship in the ocean.
      * 
-     * @param row           Row to place ship.
-     * @param column        Column to place ship.
-     * @param horizontal    Ship is horizontal.
-     * @param ocean         The ocean where the ship is placed.
+     * @param row
+     *            Row to place ship.
+     * @param column
+     *            Column to place ship.
+     * @param horizontal
+     *            Ship is horizontal.
+     * @param ocean
+     *            The ocean where the ship is placed.
      */
     public void placeShipAt(int row, int column, boolean horizontal, Ocean ocean) {
         if (okToPlaceShipAt(row, column, horizontal, ocean)) {
@@ -70,8 +80,10 @@ public abstract class Ship {
     }
 
     /**
-     * @param row       Row to shoot.
-     * @param column    Column to shoot.
+     * @param row
+     *            Row to shoot.
+     * @param column
+     *            Column to shoot.
      * @return true if a part of the ship occupies the given row and column and the ship hasn't been sunk, false otherwise.
      */
     public boolean shootAt(int row, int column) {
@@ -122,7 +134,8 @@ public abstract class Ship {
     /**
      * Sets the bow row.
      * 
-     * @param row   Row to set bow.
+     * @param row
+     *            Row to set bow.
      */
     public void setBowRow(int row) {
         bowRow = row;
@@ -138,7 +151,8 @@ public abstract class Ship {
     /**
      * Sets the bow column.
      * 
-     * @param column    Column to set bow.
+     * @param column
+     *            Column to set bow.
      */
     public void setBowColumn(int column) {
         bowColumn = column;
@@ -154,7 +168,8 @@ public abstract class Ship {
     /**
      * Sets horizontal.
      * 
-     * @param horizontal    If is horizontal.
+     * @param horizontal
+     *            If is horizontal.
      */
     public void setHorizontal(boolean horizontal) {
         this.horizontal = horizontal;
