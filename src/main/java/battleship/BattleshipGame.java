@@ -6,51 +6,57 @@ import battleship.model.ocean.Ocean;
 
 public class BattleshipGame {
 
+    private static Scanner scanner;
+
     /**
      * This is the main entry point for the game.
      */
     public static void main(String[] args) {
 
-        // Loop for games.
-        do {
-            // Welcome message.
-            System.out.println("\nWelcome to the Battleship Game!\n");
+        try (Scanner sc = new Scanner(System.in)) {
+            scanner = sc;
 
-            // Set up the ocean.
-            Ocean ocean = new Ocean();
-
-            // Place the ships.
-            ocean.placeAllShipsRandomly();
-
-            System.out.println(ocean.toString());
-
-            // Loop to accept shots until game over.
+            // Loop for games.
             do {
-                // Fire a shot. Report if hit or miss.
-                if (shoot(ocean)) {
-                    System.out.println("Congratulations! You got a hit!");
-                } else {
-                    System.out.println("Sorry, you missed.");
-                }
+                // Welcome message.
+                System.out.println("\nWelcome to the Battleship Game!\n");
+
+                // Set up the ocean.
+                Ocean ocean = new Ocean();
+
+                // Place the ships.
+                ocean.placeAllShipsRandomly();
 
                 // Display the ocean.
                 System.out.println(ocean.toString());
 
-            } while (!ocean.isGameOver());
+                // Loop to accept shots until game over.
+                do {
+                    // Fire a shot. Report if hit or miss.
+                    if (shoot(ocean)) {
+                        System.out.println("Congratulations! You got a hit!");
+                    } else {
+                        System.out.println("Sorry, you missed.");
+                    }
 
-            // Print final scores.
-            System.out.println("Game over!\n"
-                    + "----------\n"
-                    + "Shots fired : " + ocean.getShotsFired() + "\n"
-                    + "Hit count   : " + ocean.getHitCount() + "\n"
-                    + "Ships sunk  : " + ocean.getShipsSunk());
+                    System.out.println(ocean.toString());
 
-            //TODO Display where the ships were (nice to have)
+                } while (!ocean.isGameOver());
 
-        } while (playAgain());
+                // Print final scores.
+                System.out.println("Game over!\n"
+                        + "----------\n"
+                        + "Shots fired : " + ocean.getShotsFired() + "\n"
+                        + "Hit count   : " + ocean.getHitCount() + "\n"
+                        + "Ships sunk  : " + ocean.getShipsSunk());
 
-        // Sign off message to user.
-        System.out.println("\nThank you for playing. Goodbye.");
+                //TODO Display where the ships were (nice to have)
+
+            } while (playAgain());
+
+            // Sign off message to user.
+            System.out.println("\nThank you for playing. Goodbye.");
+        }
     }
 
     /**
@@ -61,17 +67,13 @@ public class BattleshipGame {
      * @return If there was a hit.
      */
     private static boolean shoot(Ocean ocean) {
-
-        // Open an input channel.
-        Scanner inputShoot = new Scanner(System.in);
-
         // Get the row to fire at.
         System.out.print("Row: ");
-        int row = inputShoot.nextInt();
+        int row = scanner.nextInt();
 
         // Get the column to fire at.
         System.out.print("Column: ");
-        int column = inputShoot.nextInt();
+        int column = scanner.nextInt();
 
         // Shoot and return hit status.
         return ocean.shotAt(row, column);
@@ -83,20 +85,16 @@ public class BattleshipGame {
      * @return True if they want to play again.
      */
     private static boolean playAgain() {
-
-        // Open an input channel.
-        Scanner inputPa = new Scanner(System.in);
-
         // Prompt user.
         System.out.print("\nPlay again (Y/N) default=N ? : ");
 
         // Get input.
-        String sPa = inputPa.nextLine();
+        String playAgain = scanner.nextLine();
 
         // If any user input.
-        if (sPa.length() > 0) {
+        if (playAgain.length() > 0) {
             // Check first character of user response.
-            if (Character.toUpperCase(sPa.charAt(0)) == 'Y') {
+            if (Character.toUpperCase(playAgain.charAt(0)) == 'Y') {
                 return true;
             }
         }
