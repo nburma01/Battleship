@@ -11,19 +11,13 @@ public abstract class Ship {
     private int bowRow;
     private int bowColumn;
     private boolean horizontal;
-    private boolean[] hit;
-
-    /*
-     * Better to initialize the hit array here instead of in each sub class
-     */
-    public Ship() {
-        hit = new boolean[getLength()];
-    }
 
     /**
      * @return the length of this ship.
      */
     public abstract int getLength();
+
+    protected abstract boolean[] getHit();
 
     /**
      * @return the type of this ship.
@@ -87,6 +81,8 @@ public abstract class Ship {
      * @return true if a part of the ship occupies the given row and column and the ship hasn't been sunk, false otherwise.
      */
     public boolean shootAt(int row, int column) {
+        validateRowAndColumn(row, column);
+
         if (isSunk()) {
             return false;
         }
@@ -96,7 +92,7 @@ public abstract class Ship {
                 return false;
             }
             if ((column >= bowColumn) && (column <= ((bowColumn + getLength()) - 1))) {
-                hit[column - bowColumn] = true;
+                getHit()[column - bowColumn] = true;
                 return true;
             }
         } else {
@@ -104,7 +100,7 @@ public abstract class Ship {
                 return false;
             }
             if ((row >= bowRow) && (row <= ((bowRow + getLength()) - 1))) {
-                hit[row - bowRow] = true;
+                getHit()[row - bowRow] = true;
                 return true;
             }
         }
@@ -116,8 +112,8 @@ public abstract class Ship {
      * @return true if every part of the ship has been hit, false otherwise.
      */
     public boolean isSunk() {
-        for (int i = 0; i < hit.length; i++) {
-            if (!hit[i]) {
+        for (int i = 0; i < getHit().length; i++) {
+            if (!getHit()[i]) {
                 return false;
             }
         }
@@ -173,6 +169,34 @@ public abstract class Ship {
      */
     public void setHorizontal(boolean horizontal) {
         this.horizontal = horizontal;
+    }
+
+    public boolean isHit(int row, int column) {
+        validateRowAndColumn(row, column);
+
+        if (horizontal) {
+            if (row != bowRow) {
+                return false;
+            }
+            if ((column >= bowColumn) && (column <= ((bowColumn + getLength()) - 1))) {
+                return getHit()[column - bowColumn];
+            }
+        } else {
+            if (column != bowColumn) {
+                return false;
+            }
+            if ((row >= bowRow) && (row <= ((bowRow + getLength()) - 1))) {
+                return getHit()[row - bowRow];
+            }
+        }
+
+        return false;
+    }
+
+    private void validateRowAndColumn(int row, int column) {
+        if ((row < 0) || (row >= Ocean.ROWS) || (column < 0) || (column >= Ocean.COLUMNS)) {
+            throw new IllegalArgumentException(String.format("row should be less than %s and column less than %s", Ocean.ROWS, Ocean.COLUMNS));
+        }
     }
 
     /*

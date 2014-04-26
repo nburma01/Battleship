@@ -1,8 +1,8 @@
 package battleship;
 
-import battleship.model.ocean.Ocean;
-
 import java.util.Scanner;
+
+import battleship.model.ocean.Ocean;
 
 public class BattleshipGame {
 
@@ -21,6 +21,8 @@ public class BattleshipGame {
 
             // Place the ships.
             ocean.placeAllShipsRandomly();
+
+            System.out.println(ocean.toString());
 
             // Loop to accept shots until game over.
             do {
@@ -53,9 +55,10 @@ public class BattleshipGame {
 
     /**
      * Get row and column to shoot at from the user.
-     *
-     * @param ocean The ocean being shot at.
-     * @return      If there was a hit.
+     * 
+     * @param ocean
+     *            The ocean being shot at.
+     * @return If there was a hit.
      */
     private static boolean shoot(Ocean ocean) {
 
@@ -76,7 +79,7 @@ public class BattleshipGame {
 
     /**
      * Ask the user if they want to play again.
-     *
+     * 
      * @return True if they want to play again.
      */
     private static boolean playAgain() {

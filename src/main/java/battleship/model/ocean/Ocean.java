@@ -21,6 +21,8 @@ public class Ocean {
     private int hitsCount;
     private int shipsSunk;
 
+    private List<Ship> fleet;
+
     /**
      * Creates an empty ocean
      */
@@ -34,6 +36,19 @@ public class Ocean {
         shotsFired = 0;
         hitsCount = 0;
         shipsSunk = 0;
+
+        fleet = new ArrayList<>();
+        fleet.add(new AircraftCarrier());
+        fleet.add(new Battleship());
+        fleet.add(new Battleship());
+        fleet.add(new Submarine());
+        fleet.add(new Submarine());
+        fleet.add(new Destroyer());
+        fleet.add(new Destroyer());
+        fleet.add(new PatrolBoat());
+        fleet.add(new PatrolBoat());
+        fleet.add(new PatrolBoat());
+        fleet.add(new PatrolBoat());
     }
 
     /**
@@ -44,33 +59,23 @@ public class Ocean {
             throw new IllegalStateException("Cannot place ships on a non empty ocean");
         }
 
-        List<Ship> fleet = new ArrayList<>();
-        fleet.add(new AircraftCarrier());
-        fleet.add(new Battleship());
-        fleet.add(new Battleship());
-        fleet.add(new Submarine());
-        fleet.add(new Submarine());
-        fleet.add(new Destroyer());
-        fleet.add(new Destroyer());
-        fleet.add(new PatrolBoat());
-
         Random random = new Random();
         int row;
         int column;
         boolean isPlaced;
 
-        for (Ship s : fleet) {
+        for (Ship ship : fleet) {
             isPlaced = false;
 
             while (isPlaced == false) {
                 row = random.nextInt(ROWS);
                 column = random.nextInt(COLUMNS);
 
-                if (s.okToPlaceShipAt(row, column, true, this)) {
-                    s.placeShipAt(row, column, true, this);
+                if (ship.okToPlaceShipAt(row, column, true, this)) {
+                    ship.placeShipAt(row, column, true, this);
                     isPlaced = true;
-                } else if (s.okToPlaceShipAt(row, column, false, this)) {
-                    s.placeShipAt(row, column, false, this);
+                } else if (ship.okToPlaceShipAt(row, column, false, this)) {
+                    ship.placeShipAt(row, column, false, this);
                     isPlaced = true;
                 }
             }
@@ -160,7 +165,7 @@ public class Ocean {
      * 
      * @return True if ocean is empty.
      */
-    private boolean isOceanEmpty() {
+    public boolean isOceanEmpty() {
         for (int i = 0; i < ROWS; i++) {
             for (int j = 0; j < COLUMNS; j++) {
                 if (!(ships[i][j] instanceof EmptySea)) {
@@ -199,14 +204,22 @@ public class Ocean {
         for (int i = 0; i < ROWS; i++) {
             buffer.append(i + " ");
             for (int j = 0; j < COLUMNS; j++) {
-                if (shotAt(i, j) && isOccupied(i, j)) {
-                    buffer.append("S");
-                } else if (shotAt(i, j) && !isOccupied(i, j)) {
-                    buffer.append("-");
-                } else if (ships[i][j].isSunk()) {
-                    buffer.append("x");
+                if (ships[i][j] instanceof EmptySea) {
+                    if (ships[i][j].isHit(i, j)) {
+                        buffer.append("-");
+                    } else {
+                        buffer.append(".");
+                    }
                 } else {
-                    buffer.append(".");
+                    if (ships[i][j].isSunk()) {
+                        buffer.append("x");
+                    } else {
+                        if (ships[i][j].isHit(i, j)) {
+                            buffer.append("S");
+                        } else {
+                            buffer.append(".");
+                        }
+                    }
                 }
                 buffer.append(" ");
             }

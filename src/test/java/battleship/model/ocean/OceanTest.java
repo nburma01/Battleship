@@ -8,7 +8,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import battleship.model.ship.AircraftCarrier;
 import battleship.model.ship.Battleship;
 import battleship.model.ship.Destroyer;
 import battleship.model.ship.EmptySea;
@@ -41,28 +40,17 @@ public class OceanTest {
     }
 
     @Test
-    public void okToPlaceShipAt() {
-        AircraftCarrier aircraftCarrier = new AircraftCarrier();
-        assertFalse(aircraftCarrier.okToPlaceShipAt(-1, 0, true, ocean));
-        assertFalse(aircraftCarrier.okToPlaceShipAt(1, 20, true, ocean));
-        assertFalse(aircraftCarrier.okToPlaceShipAt(1, 0, true, ocean));
-        assertFalse(aircraftCarrier.okToPlaceShipAt(2, 3, true, ocean));
-        assertFalse(aircraftCarrier.okToPlaceShipAt(5, 0, true, ocean));
-        assertFalse(aircraftCarrier.okToPlaceShipAt(0, 6, true, ocean));
-        assertFalse(aircraftCarrier.okToPlaceShipAt(2, 3, false, ocean));
-        assertFalse(aircraftCarrier.okToPlaceShipAt(1, 3, false, ocean));
-        assertFalse(aircraftCarrier.okToPlaceShipAt(1, 4, false, ocean));
-        assertFalse(aircraftCarrier.okToPlaceShipAt(6, 9, false, ocean));
-        assertFalse(aircraftCarrier.okToPlaceShipAt(7, 9, false, ocean));
+    public void emptyOcean() {
+        Ocean newOcean = new Ocean();
+        assertTrue(newOcean.isOceanEmpty());
+    }
 
-        assertTrue(aircraftCarrier.okToPlaceShipAt(0, 5, true, ocean));
-        assertTrue(aircraftCarrier.okToPlaceShipAt(0, 4, false, ocean));
-        assertTrue(aircraftCarrier.okToPlaceShipAt(5, 9, false, ocean));
-
-        assertFalse(aircraftCarrier.okToPlaceShipAt(5, 9, true, ocean));
-
-        // Display the ocean.
-        //        System.out.println(ocean.toString());
+    @Test
+    public void placeAllShipsRandomly() {
+        Ocean newOcean = new Ocean();
+        newOcean.placeAllShipsRandomly();
+        //TODO test all the fleet has been placed
+        System.out.println(newOcean.toString());
     }
 
     @Test
