@@ -6,7 +6,7 @@ import battleship.specification.impl.AdjacentShipSpecification;
 import battleship.specification.impl.RowColumnSpecification;
 import battleship.specification.impl.ShipLengthSpecification;
 
-public abstract class Ship {
+public abstract class Ship implements Comparable<Ship> {
 
     private int bowRow;
     private int bowColumn;
@@ -212,6 +212,23 @@ public abstract class Ship {
             return "x";
         }
         return "S";
+    }
+
+    @Override
+    public int compareTo(Ship aShip) {
+        if (this == aShip) {
+            return 0;
+        }
+
+        if (getLength() > aShip.getLength()) {
+            return -1;
+        }
+
+        if (getLength() < aShip.getLength()) {
+            return 1;
+        }
+
+        return 0;
     }
 
 }

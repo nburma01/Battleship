@@ -1,16 +1,18 @@
 package battleship.model.ocean;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Properties;
 import java.util.Random;
 
-import battleship.model.ship.AircraftCarrier;
-import battleship.model.ship.Battleship;
-import battleship.model.ship.Destroyer;
+import battleship.BattleshipGame;
 import battleship.model.ship.EmptySea;
-import battleship.model.ship.PatrolBoat;
 import battleship.model.ship.Ship;
-import battleship.model.ship.Submarine;
+import battleship.model.ship.ShipFactory;
 
 public class Ocean {
     public static final int ROWS = 10;
@@ -36,19 +38,26 @@ public class Ocean {
         shotsFired = 0;
         hitsCount = 0;
         shipsSunk = 0;
-
         fleet = new ArrayList<>();
-        fleet.add(new AircraftCarrier());
-        fleet.add(new Battleship());
-        fleet.add(new Battleship());
-        fleet.add(new Submarine());
-        fleet.add(new Submarine());
-        fleet.add(new Destroyer());
-        fleet.add(new Destroyer());
-        fleet.add(new PatrolBoat());
-        fleet.add(new PatrolBoat());
-        fleet.add(new PatrolBoat());
-        fleet.add(new PatrolBoat());
+
+        Properties properties = new Properties();
+        try {
+            InputStream inputStream = BattleshipGame.class.getResourceAsStream("/fleet.properties");
+            properties.load(inputStream);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        for (Entry<Object, Object> entry : properties.entrySet()) {
+            int times = Integer.valueOf((String)entry.getValue());
+            if (times > 0) {
+                for (int i = 0; i < times; i++) {
+                    fleet.add(ShipFactory.getShip((String)entry.getKey()));
+                }
+            }
+        }
+
+        Collections.sort(fleet);
     }
 
     /**

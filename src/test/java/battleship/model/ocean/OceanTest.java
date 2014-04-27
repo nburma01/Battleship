@@ -49,7 +49,6 @@ public class OceanTest {
     public void placeAllShipsRandomly() {
         Ocean newOcean = new Ocean();
         newOcean.placeAllShipsRandomly();
-        //TODO test all the fleet has been placed
         System.out.println(newOcean.toString());
     }
 

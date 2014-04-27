@@ -1,8 +1,13 @@
 package battleship;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Map.Entry;
+import java.util.Properties;
 import java.util.Scanner;
 
 import battleship.model.ocean.Ocean;
+import battleship.model.ship.ShipFactory;
 
 public class BattleshipGame {
 
@@ -13,8 +18,19 @@ public class BattleshipGame {
 
     /**
      * This is the main entry point for the game.
+     * 
+     * @throws IOException
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
+        // Load properties file and populate the factory
+        Properties properties = new Properties();
+        InputStream inputStream = BattleshipGame.class.getResourceAsStream("/battleship.properties");
+        properties.load(inputStream);
+
+        for (Entry<Object, Object> entry : properties.entrySet()) {
+            ShipFactory.registerShip((String)entry.getKey(), (String)entry.getValue());
+        }
+
         try (Scanner sc = new Scanner(System.in)) {
             scanner = sc;
 
