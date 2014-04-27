@@ -17,6 +17,9 @@ public abstract class Ship implements Comparable<Ship> {
      */
     public abstract int getLength();
 
+    /**
+     * @return the hit array of the ship.
+     */
     protected abstract boolean[] getHit();
 
     /**
@@ -171,6 +174,11 @@ public abstract class Ship implements Comparable<Ship> {
         this.horizontal = horizontal;
     }
 
+    /**
+     * @param row
+     * @param column
+     * @return true if the ship is hit at the given row and column
+     */
     public boolean isHit(int row, int column) {
         validateRowAndColumn(row, column);
 
@@ -214,6 +222,11 @@ public abstract class Ship implements Comparable<Ship> {
         return "S";
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
     @Override
     public int compareTo(Ship aShip) {
         if (this == aShip) {

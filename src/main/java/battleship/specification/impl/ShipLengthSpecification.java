@@ -17,6 +17,13 @@ public class ShipLengthSpecification extends AbstractSpecification<Ocean> {
         this.length = length;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see battleship.specification.AbstractSpecification#isSatisfiedBy(java.lang.Object)
+     * 
+     * @return true if the ship can be placed entirely on the ocean. False otherwise.
+     */
     @Override
     public boolean isSatisfiedBy(Ocean ocean) {
         if (horizontal) {

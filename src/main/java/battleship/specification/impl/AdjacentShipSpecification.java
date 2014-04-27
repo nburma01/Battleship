@@ -17,6 +17,13 @@ public class AdjacentShipSpecification extends AbstractSpecification<Ocean> {
         this.length = length;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see battleship.specification.AbstractSpecification#isSatisfiedBy(java.lang.Object)
+     * 
+     * @return true if the ship we want to place has no immediately adjacent ships, either horizontally, vertically, or diagonally. False otherwise.
+     */
     @Override
     public boolean isSatisfiedBy(Ocean ocean) {
         if (horizontal) {

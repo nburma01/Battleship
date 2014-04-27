@@ -12,12 +12,22 @@ public class ShipFactory {
     private ShipFactory() {
     }
 
+    /**
+     * Register the class of the Ship for the given name.
+     * 
+     * @param name
+     * @param clazz
+     */
     public static void registerShip(String name, String clazz) {
         if (!map.containsKey(name)) {
             map.put(name, clazz);
         }
     }
 
+    /**
+     * @param name
+     * @return a new Ship instance of the given name type.
+     */
     public static Ship getShip(String name) {
         try {
             String className = map.get(name);
