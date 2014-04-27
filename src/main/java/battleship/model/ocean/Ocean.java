@@ -204,22 +204,10 @@ public class Ocean {
         for (int i = 0; i < ROWS; i++) {
             buffer.append(i + " ");
             for (int j = 0; j < COLUMNS; j++) {
-                if (ships[i][j] instanceof EmptySea) {
-                    if (ships[i][j].isHit(i, j)) {
-                        buffer.append("-");
-                    } else {
-                        buffer.append(".");
-                    }
+                if (ships[i][j].isHit(i, j)) {
+                    buffer.append(ships[i][j].toString());
                 } else {
-                    if (ships[i][j].isSunk()) {
-                        buffer.append("x");
-                    } else {
-                        if (ships[i][j].isHit(i, j)) {
-                            buffer.append("S");
-                        } else {
-                            buffer.append(".");
-                        }
-                    }
+                    buffer.append(".");
                 }
                 buffer.append(" ");
             }

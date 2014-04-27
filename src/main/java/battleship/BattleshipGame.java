@@ -12,7 +12,6 @@ public class BattleshipGame {
      * This is the main entry point for the game.
      */
     public static void main(String[] args) {
-
         try (Scanner sc = new Scanner(System.in)) {
             scanner = sc;
 
@@ -33,14 +32,9 @@ public class BattleshipGame {
                 // Loop to accept shots until game over.
                 do {
                     // Fire a shot. Report if hit or miss.
-                    if (shoot(ocean)) {
-                        System.out.println("Congratulations! You got a hit!");
-                    } else {
-                        System.out.println("Sorry, you missed.");
-                    }
+                    shoot(ocean);
 
                     System.out.println(ocean.toString());
-
                 } while (!ocean.isGameOver());
 
                 // Print final scores.
@@ -49,8 +43,6 @@ public class BattleshipGame {
                         + "Shots fired : " + ocean.getShotsFired() + "\n"
                         + "Hit count   : " + ocean.getHitCount() + "\n"
                         + "Ships sunk  : " + ocean.getShipsSunk());
-
-                //TODO Display where the ships were (nice to have)
 
             } while (playAgain());
 
@@ -66,7 +58,7 @@ public class BattleshipGame {
      *            The ocean being shot at.
      * @return If there was a hit.
      */
-    private static boolean shoot(Ocean ocean) {
+    private static void shoot(Ocean ocean) {
         // Get the row to fire at and consume next line.
         System.out.print("Row: ");
         int row = scanner.nextInt();
@@ -77,8 +69,15 @@ public class BattleshipGame {
         int column = scanner.nextInt();
         scanner.nextLine();
 
-        // Shoot and return hit status.
-        return ocean.shotAt(row, column);
+        if (ocean.shotAt(row, column)) {
+            if (ocean.getShipArray()[row][column].isSunk()) {
+                System.out.println(String.format("You just sank a %s", ocean.getShipArray()[row][column].getShipType()));
+            } else {
+                System.out.println("Congratulations! You got a hit!");
+            }
+        } else {
+            System.out.println("Sorry, you missed.");
+        }
     }
 
     /**

@@ -41,4 +41,13 @@ public class EmptySea extends Ship {
         return hit[0];
     }
 
+    @Override
+    public String toString() {
+        if (hit[0]) {
+            return "-";
+        } else {
+            return ".";
+        }
+    }
+
 }
