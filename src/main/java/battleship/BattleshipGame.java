@@ -8,6 +8,9 @@ public class BattleshipGame {
 
     private static Scanner scanner;
 
+    private BattleshipGame() {
+    }
+
     /**
      * This is the main entry point for the game.
      */
@@ -93,11 +96,8 @@ public class BattleshipGame {
         String playAgain = scanner.nextLine();
 
         // If any user input.
-        if (playAgain.length() > 0) {
-            // Check first character of user response.
-            if (Character.toUpperCase(playAgain.charAt(0)) == 'Y') {
-                return true;
-            }
+        if ((playAgain.length() > 0) && (Character.toUpperCase(playAgain.charAt(0)) == 'Y')) {
+            return true;
         }
 
         // If user does not want to.

@@ -41,10 +41,8 @@ public class AdjacentShipSpecification extends AbstractSpecification<Ocean> {
     }
 
     private boolean checkOceanContainShip(int row, int column, Ocean ocean) {
-        if ((row >= 0) && (row < Ocean.ROWS) && (column >= 0) && (column < Ocean.COLUMNS)) {
-            if (ocean.isOccupied(row, column)) {
-                return true;
-            }
+        if ((row >= 0) && (row < Ocean.ROWS) && (column >= 0) && (column < Ocean.COLUMNS) && ocean.isOccupied(row, column)) {
+            return true;
         }
 
         return false;

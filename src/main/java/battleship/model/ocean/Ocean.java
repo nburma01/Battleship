@@ -16,7 +16,7 @@ public class Ocean {
     public static final int ROWS = 10;
     public static final int COLUMNS = 10;
 
-    private Ship ships[][];
+    private Ship[][] ships;
     private int shotsFired;
     private int hitsCount;
     private int shipsSunk;
@@ -67,7 +67,7 @@ public class Ocean {
         for (Ship ship : fleet) {
             isPlaced = false;
 
-            while (isPlaced == false) {
+            while (!isPlaced) {
                 row = random.nextInt(ROWS);
                 column = random.nextInt(COLUMNS);
 
@@ -194,7 +194,7 @@ public class Ocean {
      */
     @Override
     public String toString() {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         buffer.append("  ");
         for (int j = 0; j < COLUMNS; j++) {
             buffer.append(j + " ");
