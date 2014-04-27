@@ -67,13 +67,15 @@ public class BattleshipGame {
      * @return If there was a hit.
      */
     private static boolean shoot(Ocean ocean) {
-        // Get the row to fire at.
+        // Get the row to fire at and consume next line.
         System.out.print("Row: ");
         int row = scanner.nextInt();
+        scanner.nextLine();
 
-        // Get the column to fire at.
+        // Get the column to fire at and consume next line.
         System.out.print("Column: ");
         int column = scanner.nextInt();
+        scanner.nextLine();
 
         // Shoot and return hit status.
         return ocean.shotAt(row, column);
